@@ -1,5 +1,8 @@
 com\mycompany\javafx\clientesmtp_imap\vistas\LogInView.class
+com\mycompany\javafx\clientesmtp_imap\vistas\GenerarReporteView.class
 com\mycompany\javafx\clientesmtp_imap\vistas\PrincipalMonitorView$1.class
+com\mycompany\javafx\clientesmtp_imap\vistas\LogInView$1.class
+com\mycompany\javafx\clientesmtp_imap\vistas\PrincipalMonitorView$2.class
+com\mycompany\javafx\clientesmtp_imap\vistas\GenerarReporteView$1.class
 com\mycompany\javafx\clientesmtp_imap\ClienteSMTP_IMAP.class
 com\mycompany\javafx\clientesmtp_imap\vistas\PrincipalMonitorView.class
-com\mycompany\javafx\clientesmtp_imap\vistas\LogInView$1.class
