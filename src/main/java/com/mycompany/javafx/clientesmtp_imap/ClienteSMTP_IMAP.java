@@ -1,31 +1,25 @@
 package com.mycompany.javafx.clientesmtp_imap;
 
-import oshi.SystemInfo;
-import oshi.hardware.GlobalMemory;
-import oshi.hardware.HardwareAbstractionLayer;
-import oshi.software.os.OperatingSystem;
+import com.mycompany.javafx.clientesmtp_imap.vistas.PrincipalMonitorView;
 
 public class ClienteSMTP_IMAP {
 
     public static void main(String[] args) {
-        // Crear una instancia de SystemInfo
-        SystemInfo systemInfo = new SystemInfo();
-
-        // Obtener la capa de abstracción del hardware
+        /*SystemInfo systemInfo = new SystemInfo();
         HardwareAbstractionLayer hardware = systemInfo.getHardware();
+        GlobalMemory memory = hardware.getMemory();
 
-        // Obtener información sobre el sistema operativo
+        long totalMemory = memory.getTotal();
+        long usedMemory = totalMemory - memory.getAvailable();
+
+        double percentageUsed = (usedMemory * 100.0) / totalMemory;
+        
         OperatingSystem os = systemInfo.getOperatingSystem();
         System.out.println("Sistema Operativo: " + os.toString());
 
-        // Obtener información sobre la memoria
-        GlobalMemory memory = hardware.getMemory();
-        long totalMemory = memory.getTotal();
-        long availableMemory = memory.getAvailable();
-        long usedMemory = totalMemory - availableMemory;
         System.out.println("Memoria Total: " + formatBytes(totalMemory));
-        System.out.println("Memoria Disponible: " + formatBytes(availableMemory));
-        System.out.println("Uso actual de la memoria: " + formatBytes(usedMemory));
+        System.out.println("Memoria Utilizada: " + formatBytes(usedMemory));
+        System.out.println("Porcentaje de RAM Utilizada: " + String.format("%.2f%%", percentageUsed));
     }
 
     // Método para formatear bytes a kilobytes, megabytes, etc.
@@ -34,6 +28,15 @@ public class ClienteSMTP_IMAP {
         double megabytes = kilobytes / 1024.0;
         double gigabytes = megabytes / 1024.0;
 
-        return String.format("%.2f GB", gigabytes);
+        if (gigabytes > 1) {
+            return String.format("%.2f GB", gigabytes);
+        } else if (megabytes > 1) {
+            return String.format("%.2f MB", megabytes);
+        } else {
+            return String.format("%.2f KB", kilobytes);
+        }*/
+        
+        PrincipalMonitorView view = new PrincipalMonitorView();
+        view.setVisible(true);
     }
 }
