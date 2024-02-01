@@ -36,7 +36,7 @@ public class ClienteSMTP_IMAP {
         } else {
             return String.format("%.2f KB", kilobytes);
         }*/
-        
+        //oohydxqftvhgxnyb
         LogInView view = new LogInView();
         view.setVisible(true);
     }
