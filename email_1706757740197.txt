@@ -1,4 +1,0 @@
-EL PORCENTAJE DE USO DE SU EQUIPO HA SUPERADO EL 50%
-Sistema operativo: Microsoft Windows 10 (Home) build 19045
-Memoria disponible del equipo: 15,94 GB
-Uso maximo de memoria: 7,98 GB/15,94 GB/GB
