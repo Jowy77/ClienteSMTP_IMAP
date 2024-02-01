@@ -1,7 +1,6 @@
 package com.mycompany.javafx.clientesmtp_imap;
 
 import com.mycompany.javafx.clientesmtp_imap.vistas.LogInView;
-import com.mycompany.javafx.clientesmtp_imap.vistas.PrincipalMonitorView;
 
 public class ClienteSMTP_IMAP {
 

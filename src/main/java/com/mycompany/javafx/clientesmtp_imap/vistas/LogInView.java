@@ -125,9 +125,8 @@ public class LogInView extends javax.swing.JFrame {
 
             Utils.showMessageDialog("LA CONTRASEÑA/TOKEN NO PUEDEN ESTAR VACIOS", "CLAVE DE ACCESO VACIA", 0);
         } else {
-            System.out.println(passToken+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             Utils.showMessageDialog("CREDENCIALES RECOGIDAS CON EXITO\n"
-                    + "RECUERDA QUE SI LAS CREDENCIALES QUE HAS INTRODUCIDO SON ERRONEAS LA APLICACION NO PODRA ENVIAR LOS CORREOS", "ACCESS GRANTED", 0);
+                    + "RECUERDA QUE SI LAS CREDENCIALES QUE HAS INTRODUCIDO SON ERRONEAS LA APLICACION NO PODRA ENVIAR LOS CORREOS", "ACCESS GRANTED", 1);
             PrincipalMonitorView view = new PrincipalMonitorView(correo, passToken);
             view.setVisible(true);
             this.setVisible(false);

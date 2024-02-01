@@ -45,16 +45,23 @@ public class Utils {
         }
     }
 
+    public static String getUserInput(String message) {
+        return JOptionPane.showInputDialog(null, message);
+    }
+
+    public static boolean containsOnlyNumbers(String str) {
+        return Pattern.matches("[0-9]+", str);
+    }
+
     public static void showMessageDialog(String message, String title, int messageType) {
         JOptionPane.showMessageDialog(null, message, title, messageType);
     }
-    
+
     public static boolean isNotEmpty(String str) {
         return str != null && !str.isEmpty();
     }
-    
+
     public static boolean isEmailFormatValid(String email) {
-        // Patrón para verificar el formato de un correo electrónico de Gmail
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:gmail)\\.(?:com)$";
 
         Pattern pattern = Pattern.compile(emailRegex);
@@ -188,7 +195,7 @@ public class Utils {
         document.add(new Paragraph("Contenido: " + message.getContent().toString()));
         document.add(new Paragraph("-----------------------------------------------"));
     }
-    
+
     public static void deleteFilesInFolder() {
         File folder = new File("src/main/resources");
 

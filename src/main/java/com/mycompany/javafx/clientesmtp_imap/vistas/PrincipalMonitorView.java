@@ -68,17 +68,17 @@ public class PrincipalMonitorView extends javax.swing.JFrame {
                 }
 
                 if (percentageUsed >= umbralMaximo) {
-                    message = "EL PORCENTAJE DE USO DE SU EQUIPO HA SUPERADO EL 50%\n"
+                    message = "EL PORCENTAJE DE USO DE SU EQUIPO HA SUPERADO EL "+ umbralMaximo + "\n"
                             + "Sistema operativo: " + os.toString() + "\n"
                             + "Memoria disponible del equipo: " + Utils.formatBytes(totalRam) + "\n"
                             + "Uso maximo de memoria: " + Utils.formatBytes(memoriaMaximaNumero) + "/" + Utils.formatBytes(totalRam) + "/GB";
                     Utils.sendEmail(this.correo, claveDeAplicacion, this.correo, subject, message);
-                    Utils.showMessageDialog("CORREO ENVIADO, LA RAM HA LLEGADO A UN ESTADO CRITICO", "RAM SUPERADA(77-77-77)", 0);
+                    Utils.showMessageDialog("CORREO ENVIADO, LA RAM HA LLEGADO A UN ESTADO CRITICO", "RAM SUPERADA(77-77-77)", 1);
                     //PRIMERO ELIMINO LOS CORREOS VIEJOS GUARDADOS EN LOS RECURSOS
                     Utils.deleteFilesInFolder();
                     //AHORA LEERE LOS CORREOS DEL SERVIDOR Y LOS GUARDARE DE NUEVO
                     Utils.readAndSaveEmails(this.correo, claveDeAplicacion, subject);
-                    Utils.showMessageDialog("CORREOS CON EL ASUNTO 77-77-77\nGUARDADOS EN LA CARPETA RECURSOS DEL PROYECTO", "CORREO ALMACENADO", 0);
+                    Utils.showMessageDialog("CORREOS CON EL ASUNTO 77-77-77\nGUARDADOS EN LA CARPETA RECURSOS DEL PROYECTO", "CORREO ALMACENADO", 1);
                 }
                 try {
                     Thread.sleep(1000); // Dormir durante 5 segundos
@@ -115,7 +115,7 @@ public class PrincipalMonitorView extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         sistemaOperativoLabel = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        umbralEditButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         salirMenuButton = new javax.swing.JMenu();
 
@@ -157,7 +157,12 @@ public class PrincipalMonitorView extends javax.swing.JFrame {
         sistemaOperativoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         sistemaOperativoLabel.setText("Windows 7.0");
 
-        jButton2.setText("Cambiar Umbral Correos");
+        umbralEditButton.setText("Cambiar Umbral Correos");
+        umbralEditButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                umbralEditButtonActionPerformed(evt);
+            }
+        });
 
         jMenuBar1.setAlignmentX(1.0F);
         jMenuBar1.setAlignmentY(1.0F);
@@ -165,6 +170,16 @@ public class PrincipalMonitorView extends javax.swing.JFrame {
         salirMenuButton.setText("Salir");
         salirMenuButton.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         salirMenuButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        salirMenuButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                salirMenuButtonMouseClicked(evt);
+            }
+        });
+        salirMenuButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salirMenuButtonActionPerformed(evt);
+            }
+        });
         jMenuBar1.add(salirMenuButton);
 
         setJMenuBar(jMenuBar1);
@@ -207,7 +222,7 @@ public class PrincipalMonitorView extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jButton2)))
+                                .addComponent(umbralEditButton)))
                         .addGap(18, 18, 18)
                         .addComponent(jButton1)
                         .addContainerGap())))
@@ -239,15 +254,15 @@ public class PrincipalMonitorView extends javax.swing.JFrame {
                         .addComponent(memoriaReal2Label, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel9)
-                .addGap(32, 32, 32)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(picoMaximo2Label)
+                    .addComponent(picoMaximo2Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(picoDeUsoRamBar, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(umbralEditButton))
+                .addContainerGap())
         );
 
         pack();
@@ -269,10 +284,30 @@ public class PrincipalMonitorView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void umbralEditButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_umbralEditButtonActionPerformed
+        String nuevoUmbral = Utils.getUserInput("EL UMBRAL ACTUAL ES DEL " + umbralMaximo + "%\n Introduce un nuevo valor para modificarlo");
+        
+        if(!Utils.containsOnlyNumbers(nuevoUmbral)){
+            Utils.showMessageDialog("SOLO PUEDES INTRODUCIR NUMEROS", "DETECTADO TEXTO", 0);
+        }else if(Double.parseDouble(nuevoUmbral) < 0 || Double.parseDouble(nuevoUmbral) > 100){
+            Utils.showMessageDialog("EL NUMERO TIENE QUE ESTAR ENTRE 0 Y 100", "ERROR", 0);
+        }else{
+            umbralMaximo=Double.parseDouble(nuevoUmbral);
+            Utils.showMessageDialog("UMBRAL CAMBIADO A " + umbralMaximo, "UMBRAL MODIFICADO", 1);
+        }
+    }//GEN-LAST:event_umbralEditButtonActionPerformed
+
+    private void salirMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirMenuButtonActionPerformed
+        
+    }//GEN-LAST:event_salirMenuButtonActionPerformed
+
+    private void salirMenuButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_salirMenuButtonMouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_salirMenuButtonMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
@@ -288,5 +323,6 @@ public class PrincipalMonitorView extends javax.swing.JFrame {
     private javax.swing.JLabel picoMaximo2Label;
     private javax.swing.JMenu salirMenuButton;
     private javax.swing.JLabel sistemaOperativoLabel;
+    private javax.swing.JButton umbralEditButton;
     // End of variables declaration//GEN-END:variables
 }
