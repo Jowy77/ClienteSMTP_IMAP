@@ -4,6 +4,8 @@
  */
 package com.mycompany.javafx.clientesmtp_imap.vistas;
 
+import com.mycompany.javafx.clientesmtp_imap.utiles.Utils;
+
 /**
  *
  * @author 2damb
@@ -28,11 +30,11 @@ public class LogInView extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        correoTextField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        aceptarButton = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        passField = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -43,13 +45,21 @@ public class LogInView extends javax.swing.JFrame {
         jLabel2.setText("Correo electronico:");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel3.setText("Contraseña:");
+        jLabel3.setText("Contraseña/token:");
 
-        jButton1.setText("Aceptar");
+        aceptarButton.setText("Aceptar");
+        aceptarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aceptarButtonActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Salir");
-
-        jPasswordField1.setText("jPasswordField1");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -61,7 +71,7 @@ public class LogInView extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton2)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1))
+                        .addComponent(aceptarButton))
                     .addComponent(jLabel1))
                 .addGap(41, 41, 41))
             .addGroup(layout.createSequentialGroup()
@@ -69,8 +79,8 @@ public class LogInView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE))
+                    .addComponent(correoTextField)
+                    .addComponent(passField, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -81,20 +91,48 @@ public class LogInView extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(correoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
-                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(passField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(aceptarButton)
                     .addComponent(jButton2))
                 .addGap(21, 21, 21))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void aceptarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aceptarButtonActionPerformed
+        //ACEPTAR LOGGEAR
+        String correo = correoTextField.getText();
+        char[] passTokenArray = passField.getPassword();
+
+        String passToken = new String(passTokenArray);
+
+        if (!Utils.isNotEmpty(correo)) {
+            Utils.showMessageDialog("EL CORREO NO PUEDE ESTAR VACIO", "CORREO VACIO", 0);
+        } else if (!Utils.isEmailFormatValid(correo)) {
+            Utils.showMessageDialog("EL CORREO NO TIENE EL FORMATO CORRECTO\n 'aaaa@gmail.com'", "FORMATO DE CORREO INVALIDO", 0);
+        } else if (!Utils.isNotEmpty(passToken)) {
+
+            Utils.showMessageDialog("LA CONTRASEÑA/TOKEN NO PUEDEN ESTAR VACIOS", "CLAVE DE ACCESO VACIA", 0);
+        } else {
+            System.out.println(passToken+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            Utils.showMessageDialog("CREDENCIALES RECOGIDAS CON EXITO\n"
+                    + "RECUERDA QUE SI LAS CREDENCIALES QUE HAS INTRODUCIDO SON ERRONEAS LA APLICACION NO PODRA ENVIAR LOS CORREOS", "ACCESS GRANTED", 0);
+            PrincipalMonitorView view = new PrincipalMonitorView(correo, passToken);
+            view.setVisible(true);
+            this.setVisible(false);
+        }
+    }//GEN-LAST:event_aceptarButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -132,12 +170,12 @@ public class LogInView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton aceptarButton;
+    private javax.swing.JTextField correoTextField;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPasswordField passField;
     // End of variables declaration//GEN-END:variables
 }

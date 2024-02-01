@@ -1,5 +1,6 @@
 package com.mycompany.javafx.clientesmtp_imap;
 
+import com.mycompany.javafx.clientesmtp_imap.vistas.LogInView;
 import com.mycompany.javafx.clientesmtp_imap.vistas.PrincipalMonitorView;
 
 public class ClienteSMTP_IMAP {
@@ -36,7 +37,7 @@ public class ClienteSMTP_IMAP {
             return String.format("%.2f KB", kilobytes);
         }*/
         
-        PrincipalMonitorView view = new PrincipalMonitorView();
+        LogInView view = new LogInView();
         view.setVisible(true);
     }
 }

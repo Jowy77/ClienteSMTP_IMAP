@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.mail.Authenticator;
 import javax.mail.Folder;
 import javax.mail.Message;
@@ -45,6 +47,20 @@ public class Utils {
 
     public static void showMessageDialog(String message, String title, int messageType) {
         JOptionPane.showMessageDialog(null, message, title, messageType);
+    }
+    
+    public static boolean isNotEmpty(String str) {
+        return str != null && !str.isEmpty();
+    }
+    
+    public static boolean isEmailFormatValid(String email) {
+        // Patrón para verificar el formato de un correo electrónico de Gmail
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:gmail)\\.(?:com)$";
+
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+
+        return matcher.matches();
     }
 
     public static void sendEmail(String username, String password, String to, String subject, String body) {
@@ -112,7 +128,7 @@ public class Utils {
     private static void saveEmailToFile(Message message) {
         try {
             String content = message.getContent().toString();
-            FileWriter fileWriter = new FileWriter(new File("email_" + System.currentTimeMillis() + ".txt"));
+            FileWriter fileWriter = new FileWriter(new File("src/main/resources/email_" + System.currentTimeMillis() + ".txt"));
             fileWriter.write(content);
             fileWriter.close();
         } catch (IOException | MessagingException e) {
@@ -171,5 +187,33 @@ public class Utils {
         document.add(new Paragraph("Fecha de Envío: " + message.getSentDate()));
         document.add(new Paragraph("Contenido: " + message.getContent().toString()));
         document.add(new Paragraph("-----------------------------------------------"));
+    }
+    
+    public static void deleteFilesInFolder() {
+        File folder = new File("src/main/resources");
+
+        // Verificar si la ruta especificada es un directorio
+        if (folder.isDirectory()) {
+            File[] files = folder.listFiles();
+
+            // Verificar si la carpeta contiene archivos
+            if (files != null) {
+                for (File file : files) {
+                    // Eliminar cada archivo
+                    if (file.isFile()) {
+                        boolean deleted = file.delete();
+                        if (deleted) {
+                            System.out.println("Archivo eliminado: " + file.getAbsolutePath());
+                        } else {
+                            System.err.println("No se pudo eliminar el archivo: " + file.getAbsolutePath());
+                        }
+                    }
+                }
+            } else {
+                System.out.println("La carpeta está vacía.");
+            }
+        } else {
+            System.err.println("La ruta especificada no es un directorio.");
+        }
     }
 }

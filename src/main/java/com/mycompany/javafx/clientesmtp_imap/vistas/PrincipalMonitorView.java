@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package com.mycompany.javafx.clientesmtp_imap.vistas;
 
 import com.itextpdf.text.DocumentException;
@@ -31,17 +28,19 @@ public class PrincipalMonitorView extends javax.swing.JFrame {
     private double memoriaMaximaPorcentaje;
     private String message = "";
     String subject = "77-77-77";
-    String correo = "coutojoel77@gmail.com";
-    String claveDeAplicacion = "oohydxqftvhgxnyb";
+    String correo;
+    String claveDeAplicacion;
     OperatingSystem os;
     SystemInfo systemInfo = new SystemInfo();
     GlobalMemory memory = systemInfo.getHardware().getMemory();
 
-    public PrincipalMonitorView() {
+    public PrincipalMonitorView(String correo, String passToken) {
 
         initComponents();
         os = systemInfo.getOperatingSystem();
-        umbralMaximo = 50.00;
+        umbralMaximo = 50;
+        this.correo = correo;
+        this.claveDeAplicacion = passToken;
         updateMemoryInfo();
 
         System.out.println("Sistema Operativo: " + os.toString());
@@ -73,9 +72,13 @@ public class PrincipalMonitorView extends javax.swing.JFrame {
                             + "Sistema operativo: " + os.toString() + "\n"
                             + "Memoria disponible del equipo: " + Utils.formatBytes(totalRam) + "\n"
                             + "Uso maximo de memoria: " + Utils.formatBytes(memoriaMaximaNumero) + "/" + Utils.formatBytes(totalRam) + "/GB";
-                    Utils.sendEmail(correo, claveDeAplicacion, correo, subject, message);
-
-                    Utils.readAndSaveEmails(correo, claveDeAplicacion, subject);
+                    Utils.sendEmail(this.correo, claveDeAplicacion, this.correo, subject, message);
+                    Utils.showMessageDialog("CORREO ENVIADO, LA RAM HA LLEGADO A UN ESTADO CRITICO", "RAM SUPERADA(77-77-77)", 0);
+                    //PRIMERO ELIMINO LOS CORREOS VIEJOS GUARDADOS EN LOS RECURSOS
+                    Utils.deleteFilesInFolder();
+                    //AHORA LEERE LOS CORREOS DEL SERVIDOR Y LOS GUARDARE DE NUEVO
+                    Utils.readAndSaveEmails(this.correo, claveDeAplicacion, subject);
+                    Utils.showMessageDialog("CORREOS CON EL ASUNTO 77-77-77\nGUARDADOS EN LA CARPETA RECURSOS DEL PROYECTO", "CORREO ALMACENADO", 0);
                 }
                 try {
                     Thread.sleep(1000); // Dormir durante 5 segundos
@@ -112,6 +115,7 @@ public class PrincipalMonitorView extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         sistemaOperativoLabel = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         salirMenuButton = new javax.swing.JMenu();
 
@@ -153,6 +157,8 @@ public class PrincipalMonitorView extends javax.swing.JFrame {
         sistemaOperativoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         sistemaOperativoLabel.setText("Windows 7.0");
 
+        jButton2.setText("Cambiar Umbral Correos");
+
         jMenuBar1.setAlignmentX(1.0F);
         jMenuBar1.setAlignmentY(1.0F);
 
@@ -169,8 +175,8 @@ public class PrincipalMonitorView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,24 +186,29 @@ public class PrincipalMonitorView extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(sistemaOperativoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(23, 23, 23))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel6)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(memoriaTotalLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addComponent(memoriaUsadaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(memoriaTiempoRealBar, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
-                                    .addComponent(picoDeUsoRamBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(picoMaximo2Label)
-                                    .addComponent(memoriaReal2Label))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel9)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel6)
+                                            .addComponent(memoriaTotalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(memoriaUsadaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(memoriaTiempoRealBar, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+                                            .addComponent(picoDeUsoRamBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(picoMaximo2Label)
+                                            .addComponent(memoriaReal2Label))))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jButton2)))
+                        .addGap(18, 18, 18)
                         .addComponent(jButton1)
                         .addContainerGap())))
         );
@@ -233,7 +244,9 @@ public class PrincipalMonitorView extends javax.swing.JFrame {
                     .addComponent(picoMaximo2Label)
                     .addComponent(picoDeUsoRamBar, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -256,43 +269,10 @@ public class PrincipalMonitorView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PrincipalMonitorView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PrincipalMonitorView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PrincipalMonitorView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PrincipalMonitorView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new PrincipalMonitorView().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
