@@ -183,7 +183,7 @@ public class Utils {
             store.close();
 
             document.close();
-            showMessageDialog("PDF CREADO CORRECTAMENTE", "PDF", 0);
+            showMessageDialog("PDF CREADO CORRECTAMENTE", "PDF", 1);
         }
     }
 

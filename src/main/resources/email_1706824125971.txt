@@ -1,4 +1,0 @@
-EL PORCENTAJE DE USO DE SU EQUIPO HA SUPERADO EL 50%
-Sistema operativo: Microsoft Windows 11 build 22621
-Memoria disponible del equipo: 15,88 GB
-Uso maximo de memoria: 5,40 GB/15,88 GB/GB
